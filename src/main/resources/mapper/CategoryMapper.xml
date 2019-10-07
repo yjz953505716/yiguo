@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qfedu.yiguo.dao.CategoryDao">
+
+    <resultMap id="categoryMap" type="com.qfedu.yiguo.entity.Category">
+        <id column="id" property="id"></id>
+        <result column="category" property="category"></result>
+        <collection property="goodsList" ofType="com.qfedu.yiguo.entity.Goods">
+            <id column="id" property="id"></id>
+            <result column="goodsName" property="goodsName"></result>
+            <result column="imgurl" property="imgurl"></result>
+            <result column="categoryId" property="categoryId"></result>
+            <result column="price" property="price"></result>
+            <result column="explain" property="explain"></result>
+            <result column="field" property="field"></result>
+            <result column="praise" property="praise"></result>
+            <result column="code" property="code"></result>
+            <result column="spec" property="spec"></result>
+        </collection>
+    </resultMap>
+
+    <select id="findAll" resultMap="categoryMap">
+        select c.*,g.* from category c
+          left join goods g
+          on c.id = g.categoryId
+          WHERE c.id = #{id}
+    </select>
+    <select id="categoryList" resultMap="categoryMap">
+        select * from category
+    </select>
+
+</mapper>

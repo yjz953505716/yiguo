@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qfedu.yiguo.dao.OrderCountDao">
+
+    <resultMap id="orderCountMap" type="com.qfedu.yiguo.entity.OrderCount">
+        <id column="id" property="id"></id>
+        <result column="uid" property="uid"></result>
+        <result column="money" property="money"></result>
+        <result column="ressId" property="ressId"></result>
+        <collection property="ocsList" ofType="com.qfedu.yiguo.entity.OrderCountSpec" javaType="list">
+            <id column="id" property="id"></id>
+            <result column="oid" property="oid"></result>
+            <result column="gid" property="gid"></result>
+            <result column="gNum" property="gNum"></result>
+            <collection property="goodsList" ofType="com.qfedu.yiguo.entity.Goods" javaType="list">
+                <id column="id" property="id"></id>
+                <result column="goodsName" property="goodsName"></result>
+                <result column="imgurl" property="imgurl"></result>
+                <result column="categoryId" property="categoryId"></result>
+                <result column="price" property="price"></result>
+                <result column="explain" property="explain"></result>
+                <result column="field" property="field"></result>
+                <result column="praise" property="praise"></result>
+                <result column="code" property="code"></result>
+                <result column="spec" property="spec"></result>
+            </collection>
+        </collection>
+    </resultMap>
+
+    <select id="findAll" resultMap="orderCountMap">
+        select o.*,s.*,g.* from order_count o
+            left join order_count_spec s
+            on o.id = s.oid
+            left join goods g
+            on s.gid = g.id
+            where o.uid = #{uid}
+    </select>
+
+    <insert id="addOrder">
+        insert into order_count values (null ,#{uid},#{gid},#{money},#{ressId})
+    </insert>
+
+</mapper>
